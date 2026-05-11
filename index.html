@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>罗睿娴 — 品牌与人</title>
+<style>
+  :root {
+    --bg: #fff;
+    --text: #1d1d1f;
+    --text-secondary: #86868b;
+    --text-tertiary: #6e6e73;
+    --border: #d2d2d7;
+    --card-bg: #f5f5f7;
+    --accent: #0071e3;
+    --radius: 18px;
+    --radius-sm: 12px;
+  }
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", "PingFang SC", "Noto Sans SC", sans-serif;
+    color: var(--text);
+    background: var(--bg);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  .container { max-width: 980px; margin: 0 auto; padding: 0 24px; }
+  section { padding: 120px 0; }
+
+  /* Navigation */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(255,255,255,0.8); backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+  }
+  nav .container { display: flex; justify-content: center; gap: 32px; padding: 0 24px; height: 48px; align-items: center; }
+  nav a {
+    font-size: 13px; font-weight: 400; color: var(--text-secondary); text-decoration: none;
+    letter-spacing: -0.01em; transition: color 0.2s;
+  }
+  nav a:hover { color: var(--text); }
+
+  /* Hero */
+  #hero { padding: 200px 0 80px; text-align: center; }
+  #hero .avatar {
+    width: 88px; height: 88px; border-radius: 50%; background: var(--card-bg);
+    margin: 0 auto 32px; display: flex; align-items: center; justify-content: center;
+    font-size: 36px; color: var(--text-secondary);
+  }
+  #hero h1 { font-size: 56px; font-weight: 600; letter-spacing: -0.015em; line-height: 1.1; margin-bottom: 12px; }
+  #hero .role { font-size: 24px; font-weight: 400; color: var(--text-secondary); letter-spacing: -0.01em; margin-bottom: 8px; }
+  #hero .location { font-size: 16px; color: var(--text-tertiary); }
+  #hero .tagline { font-size: 17px; color: var(--text-secondary); max-width: 520px; margin: 32px auto 0; line-height: 1.7; }
+
+  /* Section Titles */
+  .section-title { font-size: 13px; font-weight: 600; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 48px; }
+
+  /* About */
+  #about .intro { font-size: 28px; font-weight: 500; letter-spacing: -0.01em; line-height: 1.4; max-width: 720px; }
+  #about .details { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 56px; }
+  .stat { padding: 24px; background: var(--card-bg); border-radius: var(--radius-sm); }
+  .stat .num { font-size: 32px; font-weight: 600; letter-spacing: -0.02em; }
+  .stat .label { font-size: 14px; color: var(--text-secondary); margin-top: 4px; }
+
+  /* Experience */
+  .timeline { position: relative; padding-left: 28px; }
+  .timeline::before { content: ''; position: absolute; left: 8px; top: 4px; bottom: 4px; width: 1px; background: var(--border); }
+  .timeline-item { position: relative; margin-bottom: 48px; }
+  .timeline-item:last-child { margin-bottom: 0; }
+  .timeline-item::before {
+    content: ''; position: absolute; left: -24px; top: 6px;
+    width: 9px; height: 9px; border-radius: 50%; background: var(--accent);
+    border: 3px solid var(--bg);
+  }
+  .timeline-item .period { font-size: 14px; color: var(--text-tertiary); margin-bottom: 4px; }
+  .timeline-item .company { font-size: 20px; font-weight: 600; letter-spacing: -0.01em; }
+  .timeline-item .role { font-size: 15px; color: var(--text-secondary); margin: 2px 0 12px; }
+  .timeline-item .desc { font-size: 15px; color: var(--text-tertiary); line-height: 1.7; }
+
+  /* Portfolio */
+  .portfolio-filters { display: flex; gap: 8px; margin-bottom: 40px; flex-wrap: wrap; }
+  .filter-btn {
+    padding: 8px 18px; border: none; border-radius: 20px; cursor: pointer;
+    font-size: 14px; font-family: inherit; background: var(--card-bg); color: var(--text-secondary);
+    transition: all 0.2s;
+  }
+  .filter-btn.active, .filter-btn:hover { background: var(--text); color: var(--bg); }
+  .portfolio-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; }
+  .portfolio-card {
+    background: var(--card-bg); border-radius: var(--radius); padding: 32px;
+    transition: transform 0.3s, box-shadow 0.3s; cursor: default;
+  }
+  .portfolio-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.06); }
+  .portfolio-card .cat { font-size: 12px; font-weight: 600; color: var(--accent); text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 12px; }
+  .portfolio-card .title { font-size: 18px; font-weight: 600; letter-spacing: -0.01em; margin-bottom: 8px; }
+  .portfolio-card .desc { font-size: 14px; color: var(--text-tertiary); line-height: 1.6; }
+
+  /* Contact */
+  #contact { text-align: center; padding-bottom: 160px; }
+  .contact-links { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; }
+  .contact-item { font-size: 16px; color: var(--text-secondary); text-decoration: none; transition: color 0.2s; }
+  .contact-item:hover { color: var(--accent); }
+
+  /* Resume Download */
+  .download-btn {
+    display: inline-block; margin-top: 40px; padding: 14px 32px;
+    background: var(--text); color: var(--bg); border-radius: 24px;
+    font-size: 15px; font-weight: 500; text-decoration: none; letter-spacing: -0.01em;
+    transition: opacity 0.2s;
+  }
+  .download-btn:hover { opacity: 0.85; }
+
+  /* Footer */
+  footer { text-align: center; padding: 40px 0; border-top: 1px solid var(--border); }
+  footer p { font-size: 13px; color: var(--text-tertiary); }
+
+  /* Mobile */
+  @media (max-width: 640px) {
+    section { padding: 80px 0; }
+    #hero { padding: 140px 0 60px; }
+    #hero h1 { font-size: 36px; }
+    #hero .role { font-size: 18px; }
+    #about .intro { font-size: 22px; }
+    #about .details { grid-template-columns: 1fr; }
+    nav .container { gap: 20px; }
+    .portfolio-grid { grid-template-columns: 1fr; }
+    .contact-links { flex-direction: column; gap: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="container">
+    <a href="#hero">首页</a>
+    <a href="#about">关于</a>
+    <a href="#experience">履历</a>
+    <a href="#portfolio">作品</a>
+    <a href="#contact">联系</a>
+  </div>
+</nav>
+
+<section id="hero">
+  <div class="container">
+    <div class="avatar">R</div>
+    <h1>罗睿娴</h1>
+    <p class="role">品牌公关 · toG 政府项目</p>
+    <p class="location">武汉</p>
+    <p class="tagline">10年品牌实战，从记者到宣传负责人。专注政务服务品牌建设，擅长用叙事连接政府与公众。</p>
+  </div>
+</section>
+
+<section id="about">
+  <div class="container">
+    <p class="section-title">关于</p>
+    <p class="intro">10年品牌传播经验，深耕 toG 政府项目。熟悉智慧城市、数字政府、信息化建设，能撰写产品、服务、实施方案。同时掌握品牌打造及文字、视频等宣传手段。</p>
+    <div class="details">
+      <div class="stat">
+        <div class="num">10+</div>
+        <div class="label">年工作经验</div>
+      </div>
+      <div class="stat">
+        <div class="num">30+</div>
+        <div class="label">政务服务项目</div>
+      </div>
+      <div class="stat">
+        <div class="num">90%</div>
+        <div class="label">文案一次性通过率</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="experience">
+  <div class="container">
+    <p class="section-title">履历</p>
+    <div class="timeline">
+      <div class="timeline-item">
+        <p class="period">2021.12 — 至今</p>
+        <p class="company">武汉中科曙光坤程科技发展有限公司</p>
+        <p class="role">宣传负责人</p>
+        <p class="desc">统筹方案组、宣传组、政研室三线。负责30+项目售前方案、政府汇报、媒体宣传。文案一次性通过率90%以上。服务武汉某区单位排名第一。拓展湖北省10+家重要媒体渠道。</p>
+      </div>
+      <div class="timeline-item">
+        <p class="period">2019.12 — 2021.06</p>
+        <p class="company">青年城投资集团有限公司</p>
+        <p class="role">品牌经理</p>
+        <p class="desc">从0到1搭建品宣部。品牌定位及策略撰写，VI体系搭建，品牌活动策划。新媒体运营，公关新闻稿与领导讲话稿撰写。企业文化建设及内刊策划编辑。</p>
+      </div>
+      <div class="timeline-item">
+        <p class="period">2017.10 — 2019.05</p>
+        <p class="company">武汉工控集团亘星创意产业发展有限公司</p>
+        <p class="role">房地产策划</p>
+        <p class="desc">项目营销推广策划，公众号阅读量提升50%。5个月让创意园区从无人知晓到网红打卡地。完成企业杂志刊物策划编撰。起草党建、新闻稿、领导讲话稿等文字资料，在上级公司优秀论文集发表。</p>
+      </div>
+      <div class="timeline-item">
+        <p class="period">2014.07 — 2017.10</p>
+        <p class="company">洪山区新闻宣传中心</p>
+        <p class="role">记者</p>
+        <p class="desc">文字+摄影记者。洪山区委宣传部报刊采编，党代会、两会宣传报道。独立采稿多篇被长江网、新华网、荆楚网发表。监控负面舆情并协调处置。</p>
+      </div>
+    </div>
+    <a class="download-btn" href="files/罗睿娴简历.pdf" download>下载完整简历 ↓</a>
+  </div>
+</section>
+
+<section id="portfolio">
+  <div class="container">
+    <p class="section-title">作品集</p>
+    <div class="portfolio-filters">
+      <button class="filter-btn active" data-filter="all">全部</button>
+      <button class="filter-btn" data-filter="方案">传播方案</button>
+      <button class="filter-btn" data-filter="文案">文案</button>
+      <button class="filter-btn" data-filter="设计">平面设计</button>
+      <button class="filter-btn" data-filter="视频">影视</button>
+      <button class="filter-btn" data-filter="活动">活动组织</button>
+    </div>
+    <div class="portfolio-grid">
+      <div class="portfolio-card" data-cat="活动">
+        <p class="cat">活动组织</p>
+        <p class="title">第六届中国政务服务博览会</p>
+        <p class="desc">全国政务服务领域顶级展会，统筹策划与执行。首届人力资源服务产业高质量发展峰会同期举办。</p>
+      </div>
+      <div class="portfolio-card" data-cat="活动">
+        <p class="cat">活动组织</p>
+        <p class="title">安徽省政务服务高质量发展会议</p>
+        <p class="desc">助推公司拿下安徽升级项目，为公司第一个升级大厅项目。省级标杆会议组织。</p>
+      </div>
+      <div class="portfolio-card" data-cat="视频">
+        <p class="cat">影视</p>
+        <p class="title">政务歌曲 MV《奔跑吧汉阳》</p>
+        <p class="desc">汉阳政务服务之歌。政务大厅循环播放，获全国优秀政务歌曲提名。</p>
+      </div>
+      <div class="portfolio-card" data-cat="方案">
+        <p class="cat">传播方案</p>
+        <p class="title">长江青年城品牌计划执行方案</p>
+        <p class="desc">从品牌定位到传播策略全案策划，青年社区品牌0到1搭建。</p>
+      </div>
+      <div class="portfolio-card" data-cat="方案">
+        <p class="cat">传播方案</p>
+        <p class="title">武汉云夜间经济及文化项目推荐案</p>
+        <p class="desc">城市夜间经济与文化项目整合传播方案。</p>
+      </div>
+      <div class="portfolio-card" data-cat="方案">
+        <p class="cat">传播方案</p>
+        <p class="title">人工智能产业"选育引聚"提案</p>
+        <p class="desc">激活汉阳区新质生产力引擎，AI产业引进与培育策略。</p>
+      </div>
+      <div class="portfolio-card" data-cat="文案">
+        <p class="cat">文案</p>
+        <p class="title">太和板面一件事 · 案例解读</p>
+        <p class="desc">政务服务"一件事"改革经典案例，深度解读便民服务创新。</p>
+      </div>
+      <div class="portfolio-card" data-cat="文案">
+        <p class="cat">文案</p>
+        <p class="title">AI应用浪潮下政务服务探索创新之路</p>
+        <p class="desc">领导讲话稿，政务服务数字化转型方向论述。</p>
+      </div>
+      <div class="portfolio-card" data-cat="设计">
+        <p class="cat">平面设计</p>
+        <p class="title">大智无界宣传册</p>
+        <p class="desc">创意产业园区品牌宣传册设计与内容策划。</p>
+      </div>
+      <div class="portfolio-card" data-cat="活动">
+        <p class="cat">活动组织</p>
+        <p class="title">社工部发布会 & 技能大赛</p>
+        <p class="desc">政府发布会与职业技能赛事统筹组织。</p>
+      </div>
+      <div class="portfolio-card" data-cat="设计">
+        <p class="cat">平面设计</p>
+        <p class="title">武装部展厅 & 企业展厅策划</p>
+        <p class="desc">部队与企业展厅策划，空间叙事与品牌表达。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="container">
+    <p class="section-title">联系</p>
+    <div class="contact-links">
+      <span class="contact-item">📱 18327872158</span>
+      <span class="contact-item">💬 微信：-rachel123-</span>
+      <span class="contact-item">📍 武汉</span>
+    </div>
+    <a class="download-btn" href="files/罗睿娴简历.pdf" download>下载简历 PDF</a>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <p>© 2026 罗睿娴</p>
+  </div>
+</footer>
+
+<script>
+  // Portfolio filter
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const filter = btn.dataset.filter;
+      document.querySelectorAll('.portfolio-card').forEach(card => {
+        card.style.display = (filter === 'all' || card.dataset.cat === filter) ? '' : 'none';
+      });
+    });
+  });
+
+  // Fade in on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.portfolio-card, .timeline-item, .stat').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = 'opacity 0.6s, transform 0.6s';
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>
